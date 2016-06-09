@@ -82,7 +82,7 @@ $(document).ready(function() {
         cells[i].height(diameter).width(diameter);
       }
     }
-  }, 500);
+  }, 250);
 
   // Putting all the values of the cells object into the YX object to make searching the cells by
   // only X and Y values way easier.
@@ -99,7 +99,22 @@ $(document).ready(function() {
 
   // testing if it works
   // IT DOES ;)
-  YX[3][3].addClass('test');
+
+  // Y  X
+  // ^  ^
+  //YX[2][8].addClass('test');
+
+  /*
+  // Returns a random number between min (inclusive) and max (exclusive)
+  function getRandomArbitrary(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+  }
+
+  var randomCell = getRandomArbitrary(1, (amount*amount)+1);
+  console.log(randomCell);
+  cells[randomCell].addClass('test')
+  */
+
 
 });
 
