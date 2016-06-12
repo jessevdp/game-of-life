@@ -104,7 +104,7 @@ var grid = {
 
       // End of the loop. Next row's y will be y+1
       y = y + 1;
-    } // end of dor loop (i)
+    } // end of for loop (i)
 
   }, // end
 
