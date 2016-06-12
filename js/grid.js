@@ -67,7 +67,7 @@ var grid = {
         .height(this.diameter)
         .width(this.diameter);
 
-        // This number is used in making the cells object,
+        // This number is used in making the 'cells' object,
         // no number can be the same. Soo +1;
         number = number + 1;
 
@@ -92,7 +92,6 @@ var grid = {
         // the #grid div in the html page.
         $('#grid').append($cell);
 
-        console.log(i+' '+j);
         this.YX[i][j] = this.cells[number];
 
         // End of the loop. The next cells' x will be x+1
@@ -110,7 +109,7 @@ var grid = {
   }, // end
 
   updateDiameter: function(interval) {
-    // Safety, inside the interval 'this' becomes the window
+    // SAFETY!, inside the interval 'this' becomes the window
     // object instead of the grid object. We can now use 'self'.
     var self = this;
     window.setInterval(function () {
@@ -124,7 +123,6 @@ var grid = {
         for (var i = 1; i < (self.amount*self.amount)+1; i++) {
           self.cells[i].height(self.diameter).width(self.diameter);
         }
-
       }
 
     }, interval);
