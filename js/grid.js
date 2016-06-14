@@ -43,7 +43,6 @@ var grid = {
 
     // If the diameter has not yet been set it runs the
     // function and sets it.
-
     if (this.diameter == undefined || this.diameter == null) {
       this.setDiameter();
     }
@@ -104,7 +103,7 @@ var grid = {
           }
         }; // end of function
 
-        this.setState(this.randomState(), number);
+        this.cells[number].setState(this.randomState());
 
         // Adding the div with all its classes to
         // the #grid div in the html page.
