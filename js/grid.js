@@ -30,61 +30,6 @@ var grid = {
     return state;
   }, // end
 
-  setState: function(newState, NUMBERorY, x) {
-    if (newState == 0 || newState == 1) {
-      // if x !== undefined it means an x value is put in. So we
-      // change the state using the YX[y][x] object rather than the
-      // cells[number] object.
-      if (x !== undefined) {
-        var y = NUMBERorY;
-
-        // Removing the old dead/alive class.
-        if (this.YX[y][x].state == 1) {
-          this.YX[y][x].removeClass('alive');
-        }else if (this.YX[y][x].state == 0) {
-          this.YX[y][x].removeClass('dead');
-        }
-
-        // Setting it's state equal to the newState.
-        this.YX[y][x].state = newState;
-
-        // Adding the dead/alive class.
-        if (this.YX[y][x].state == 1) {
-          this.YX[y][x].addClass('alive');
-        }else if (this.YX[y][x].state == 0) {
-          this.YX[y][x].addClass('dead');
-        }
-
-        // If x == undefined it means there was no x value put in. So the
-        // NUMBERorY value is used as number in cells[number] to change its state
-      }else if (x == undefined) {
-        var number = NUMBERorY;
-
-        // Removing the old dead/alive class.
-        if (this.cells[number].state == 1) {
-          this.cells[number].removeClass('alive');
-        }else if (this.cells[number].state == 0) {
-          this.cells[number].removeClass('dead');
-        }
-
-        // Setting it's state equal to the newState.
-        this.cells[number].state = newState;
-
-        // Adding the dead/alive class.
-        if (this.cells[number]['state'] === 1) {
-          this.cells[number].addClass('alive');
-        }else if (this.cells[number]['state'] === 0){
-          this.cells[number].addClass('dead');
-        }
-
-      } // end elseif
-
-    }else{
-      throw 'State should be either 1 or 0';
-    }
-
-  }, // end
-
   drawGrid: function() {
     // This function draws the grid and creates the objects
     // used to indevidually adress all the cells (cells & YX).
@@ -134,6 +79,30 @@ var grid = {
         // Adding the X and Y coordinate
         this.cells[number]['y'] = y;
         this.cells[number]['x'] = x;
+
+        // setState() function on the cells/YX object so we can call
+        // grid.YX[y][x].setState(state) || grid.cells[number].setState(state)
+        this.cells[number].setState = function(newState) {
+          if (newState == 0 || newState == 1) {
+            // Removing dead/alive class if it either.
+            if (this.hasClass('dead')) {
+              this.removeClass('dead');
+            }else if (this.hasClass('alive')) {
+              this.removeClass('alive')
+            }
+            // Setting the objects newState.
+            this.state = newState;
+
+            if (this.state == 1) {
+              this.addClass('alive');
+            }else if (this.state == 0) {
+              this.addClass('dead');
+            }
+          }else {
+            // If newState != 1 or 0 then this error is thrown.
+            throw newState + ' is not a valid state!'
+          }
+        }; // end of function
 
         this.setState(this.randomState(), number);
 
