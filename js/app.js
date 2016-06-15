@@ -12,11 +12,14 @@ $(document).ready(function() {
   console.log('state2: '+grid.cells[90].state);
 
   $(document).click(function() {
-    grid.YX[2][2].setState(1)
-    grid.cells[90].setState(1)
+    //grid.YX[2][2].setState(1)
+    //grid.cells[90].setState(1)
     console.log('newState1: '+grid.YX[2][2].state);
     console.log('newState2: '+grid.cells[90].state);
+    checkNeighbours(cell);
   });
+
+
 
   function checkNeighbours(cell) {
     var x = cell.x;
@@ -100,11 +103,29 @@ $(document).ready(function() {
     // Adding the amount of living neighbours to the cells object
     cell.aliveNeighbours = aliveNeighbours;
 
+    if(grid.cells[i].state == 1 && cell.aliveNeighbours > 2) {
+      grid.cells[i].setState(0);
+    }
+
+    if(grid.cells[i].state == 1 && cell.aliveNeighbours < 3) {
+      grid.cells[i].setState(0);
+    }
+
+    if(grid.cells[i].state == 1 && cell.aliveNeighbours == 2 || cell.aliveNeighbours == 3) {
+      grid.cells[i].setState(1);
+    }
+
+    if(grid.cells[i].state == 0 && cell.aliveNeighbours == 3) {
+      grid.cells[i].setState(1);
+    }
+
   } // end of function
   for (var i = 1; i < grid.amount*grid.amount+1; i++) {
     checkNeighbours(grid.cells[i]);
     console.log(i+': '+grid.cells[i].aliveNeighbours);
+
   }
+
 
 });
 // --- THE RULES ---
