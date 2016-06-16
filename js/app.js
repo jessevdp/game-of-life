@@ -5,19 +5,6 @@ $(document).ready(function() {
   var YX = grid.YX;
   //YX[1][1].addClass('test');
 
-  grid.YX[2][2].setState(0)
-  grid.cells[90].setState(0)
-
-  console.log('state1: '+grid.YX[2][2].state);
-  console.log('state2: '+grid.cells[90].state);
-
-  $(document).click(function() {
-    //grid.YX[2][2].setState(1)
-    //grid.cells[90].setState(1)
-    console.log('newState1: '+grid.YX[2][2].state);
-    console.log('newState2: '+grid.cells[90].state);
-    checkNeighbours(cell);
-  });
 
 
 
@@ -103,28 +90,46 @@ $(document).ready(function() {
     // Adding the amount of living neighbours to the cells object
     cell.aliveNeighbours = aliveNeighbours;
 
-    if(grid.cells[i].state == 1 && cell.aliveNeighbours > 2) {
-      grid.cells[i].setState(0);
-    }
 
-    if(grid.cells[i].state == 1 && cell.aliveNeighbours < 3) {
-      grid.cells[i].setState(0);
-    }
-
-    if(grid.cells[i].state == 1 && cell.aliveNeighbours == 2 || cell.aliveNeighbours == 3) {
-      grid.cells[i].setState(1);
-    }
-
-    if(grid.cells[i].state == 0 && cell.aliveNeighbours == 3) {
-      grid.cells[i].setState(1);
-    }
 
   } // end of function
-  for (var i = 1; i < grid.amount*grid.amount+1; i++) {
-    checkNeighbours(grid.cells[i]);
-    console.log(i+': '+grid.cells[i].aliveNeighbours);
 
+  function nextStates(cell) {
+    //
+    if(cell.state == 1 && cell.aliveNeighbours < 2) {
+      cell.nextState = 0;
+    }
+    else if(cell.state == 1 && cell.aliveNeighbours > 3) {
+      cell.nextState = 0;
+    }
+
+    else if(cell.state == 1 && cell.aliveNeighbours == 2) {
+      cell.nextState = 1;
+    }
+    else if (cell.state == 1 && cell.aliveNeighbours == 3) {
+      cell.nextState = 1;
+    }
+    else if(cell.state == 0 && cell.aliveNeighbours == 3) {
+      cell.nextState = 1;
+    }
+    else{
+      cell.nextState = cell.state;
+    }
   }
+
+  function gameStep() {
+    for (var i = 1; i < grid.amount*grid.amount+1; i++) {
+      grid.cells[i].setState(grid.cells[i].nextState);
+    }
+  }
+
+  $(document).click(function(){
+    for (var i = 1; i < grid.amount*grid.amount+1; i++) {
+      checkNeighbours(grid.cells[i]);
+      nextStates(grid.cells[i]);
+    }
+    gameStep();
+  });
 
 
 });
