@@ -123,13 +123,13 @@ $(document).ready(function() {
     }
   }
 
-  $(document).click(function(){
+  $(window).setInterval(function(){
     for (var i = 1; i < grid.amount*grid.amount+1; i++) {
       checkNeighbours(grid.cells[i]);
       nextStates(grid.cells[i]);
     }
     gameStep();
-  });
+  },175);
 
 
 });
