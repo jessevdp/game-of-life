@@ -6,6 +6,8 @@ $(document).ready(function() {
   //YX[1][1].addClass('test');
 
 
+
+
   function checkNeighbours(cell) {
     var x = cell.x;
     var y = cell.y;
@@ -121,13 +123,13 @@ $(document).ready(function() {
     }
   }
 
-  window.setInterval(function(){
+  $(document).click(function(){
     for (var i = 1; i < grid.amount*grid.amount+1; i++) {
       checkNeighbours(grid.cells[i]);
       nextStates(grid.cells[i]);
     }
     gameStep();
-  }, 175);
+  });
 
 
 });
