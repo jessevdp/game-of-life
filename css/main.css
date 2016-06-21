@@ -26,16 +26,10 @@ html, body{
   background-color: #6f6f6f;
   opacity: 0.5;
 }
-
-
 .alive{
   background-color: #e300ff;
   opacity: 0.7;
 }
 .dead{
   background-color: #5c5c5c;
-}
-.test {
-  background-color: rgb(0, 255, 0);
-  opacity: 1;
 }
