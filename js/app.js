@@ -1,14 +1,17 @@
 function init(interval) {
+  grid.setAmount(20);
   grid.drawGrid();
+  grid.randomGrid();
   grid.updateDiameter(250);
 
-  window.setInterval(function(){
+  /*window.setInterval(function(){
     for (var i = 1; i < grid.amount*grid.amount+1; i++) {
       grid.checkNeighbours(grid.cells[i]);
       grid.nextStates(grid.cells[i]);
     } // end of for loop
     grid.gameStep();
   },interval); // end of interval
+  */
 } // end of function
 
 $(document).ready(function(){
