@@ -1,5 +1,7 @@
 function init(interval) {
+  grid.setAmount(30);
   grid.drawGrid();
+  grid.randomGrid();
   grid.updateDiameter(250);
 
   window.setInterval(function(){
@@ -9,6 +11,7 @@ function init(interval) {
     } // end of for loop
     grid.gameStep();
   },interval); // end of interval
+
 } // end of function
 
 $(document).ready(function(){
