@@ -1,5 +1,9 @@
 var grid = {
 
+  // Empty objects for use later on.
+  cells: {},
+  YX: {},
+
   setAmount: function(amount) {
     // This statement will make sure that if amount is not
     // put in there will still be a deafault value.
@@ -24,20 +28,51 @@ var grid = {
   }, // end
 
   randomState: function() {
-    // Rounding off a random number between 0 and 1 to
-    // get 0 or 1 as a result.
-    var state = Math.round(Math.random());
+    // Rounding off a random number between 0 and 1 and multiplying
+    // it by 1000. Then we see if the number is odd or even.
+    // If its even the random state will be 1 else it will be 0
+
+    // This is because just rounding off a random number gives more one's then
+    // zero's.
+    var randomNum = Math.round(Math.random()*1000);
+    if (randomNum%2 == 0) {
+      var state = 1;
+    }else {
+      var state = 0;
+    }
     return state;
   }, // end
 
-  drawGrid: function() {
-    // This function draws the grid and creates the objects
-    // used to indevidually adress all the cells (cells & YX).
+  setState: function(cell, newState) {
+    if (newState == 0 || newState == 1) {
+      var $cell = $('#'+cell.number)
 
-    // Creating an empty object for use later on.
-    this.cells = {};
-    this.YX = {};
-    // Some variables needed.
+      // Removing dead/alive class if it either.
+      if ($cell.hasClass('dead')) {
+        $cell.removeClass('dead');
+      }else if ($cell.hasClass('alive')) {
+        $cell.removeClass('alive')
+      }
+
+      // Setting the objects newState.
+      cell.state = newState;
+
+      // Adding the dead or alive class acordingly.
+      if (cell.state == 1) {
+        $cell.addClass('alive');
+      }else if (cell.state == 0) {
+        $cell.addClass('dead');
+      }
+
+    }else {
+      // If newState != 1 or 0 then this error is thrown.
+      throw newState+ ' is not a valid state.'
+    }
+  },
+
+  drawGrid: function() {
+
+    // some local variables needed:
     var number = 0;
     var y = 1;
 
@@ -47,69 +82,45 @@ var grid = {
       this.setDiameter();
     }
 
-    // Two for loops, each runnin 'amount' times.
-    // The inside for loop creates 'amount' div's and
-    // adds them to the HTML page. The outside loop
-    // runs the inner one and adds a line breaker (<br>)
-    // at the end, making sure there's no more than
-    // 'amount' div's on one line
     for (var i = 1; i < this.amount+1; i++) {
-        // Declaring the x var inside the first loop so
-        // it's reset with every line.
-        var x = 1;
-        this.YX[i] = {};
+
+      // Declaring the x var inside the first loop so
+      // it's reset with every line.
+      var x = 1;
+      // Creating an empty object for every line or y coordinate.
+      this.YX[i] = {};
+
       for (var j = 1; j < this.amount+1; j++) {
-        // A variable set equal to a jquery object for a div
-        // with a class of .cell and a set height and width.
-        var $cell = $('<div />')
-        .addClass('cell')
-        .height(this.diameter)
-        .width(this.diameter);
 
         // This number is used in making the 'cells' object,
         // no number can be the same. Soo +1;
         number = number + 1;
 
-        // Adding a reference to this particular cell inside of
-        // the cells object so we can change its classes later on.
-        this.cells[number] = $cell;
-        // Adding the value of 'number' to the object
-        this.cells[number]['number'] = number;
-        // Adding the X and Y coordinate
-        this.cells[number]['y'] = y;
-        this.cells[number]['x'] = x;
+        // A variable set equal to a jquery object for a div
+        // with a class of .cell, an id of #'number' and a set height and width.
+        var $cell = $('<div />')
+        .addClass('cell')
+        .attr('id', number)
+        .height(this.diameter)
+        .width(this.diameter);
 
-        // setState() function on the cells/YX object so we can call
-        // grid.YX[y][x].setState(state) || grid.cells[number].setState(state)
-        this.cells[number].setState = function(newState) {
-          if (newState == 0 || newState == 1) {
-            // Removing dead/alive class if it either.
-            if (this.hasClass('dead')) {
-              this.removeClass('dead');
-            }else if (this.hasClass('alive')) {
-              this.removeClass('alive')
-            }
-            // Setting the objects newState.
-            this.state = newState;
+        // Creating a new empty object inside of the cells object for
+        // each number.
+        this.cells[number] = {};
+        // Addings this cells number to the object for use later on.
+        this.cells[number].number = number;
+        // Adding this cells X and Y coordinates to the object for use later on.
+        this.cells[number].y = y;
+        this.cells[number].x = x;
 
-            if (this.state == 1) {
-              this.addClass('alive');
-            }else if (this.state == 0) {
-              this.addClass('dead');
-            }
-          }else {
-            // If newState != 1 or 0 then this error is thrown.
-            throw newState + ' is not a valid state!'
-          }
-        }; // end of function
-
-        this.cells[number].setState(this.randomState());
+        // Adding a reference to the object we just created but with a diferent
+        // way of accesing it. Making it easier to acces the cell by using
+        // its Y and X coordinates.
+        this.YX[i][j] = this.cells[number];
 
         // Adding the div with all its classes to
         // the #grid div in the html page.
         $('#grid').append($cell);
-
-        this.YX[i][j] = this.cells[number];
 
         // End of the loop. The next cells' x will be x+1
         x = x + 1;
@@ -125,10 +136,17 @@ var grid = {
 
   }, // end
 
+  randomGrid: function() {
+    for (var i = 1; i < (this.amount*this.amount)+1; i++) {
+      this.setState(this.cells[i], this.randomState());
+    }
+  }, // end
+
   updateDiameter: function(interval) {
     // SAFETY!, inside the interval 'this' becomes the window
     // object instead of the grid object. We can now use 'self'.
     var self = this;
+
     window.setInterval(function () {
 
       var oldDiameter = self.diameter;
@@ -138,11 +156,13 @@ var grid = {
       // from running if the diameter does NOT change.
       if (oldDiameter !== self.diameter) {
         for (var i = 1; i < (self.amount*self.amount)+1; i++) {
-          self.cells[i].height(self.diameter).width(self.diameter);
+          var $cell = $('#'+self.cells[i].number)
+          $cell.height(self.diameter).width(self.diameter);
         }
       }
 
-    }, interval);
+    }, interval); // end of interval
+
   }, // end
 
   checkNeighbours: function(cell) {
@@ -230,7 +250,13 @@ var grid = {
   }, // end
 
   nextStates: function(cell) {
-    //
+    /*=====================================================================
+                                    THE RULES
+      =====================================================================*/
+    // Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure).
+    // Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
+    // Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+    // Any dead cell with exactly three live neighbours will come to life.
     if(cell.state == 1 && cell.aliveNeighbours < 2) {
       cell.nextState = 0;
     }
@@ -254,8 +280,11 @@ var grid = {
 
   gameStep: function() {
     for (var i = 1; i < this.amount*this.amount+1; i++) {
-      this.cells[i].setState(this.cells[i].nextState);
+      // Preventing the function from running if the state stays the same.
+      if (this.cells[i].nextState != this.cells[i].state) {
+        this.setState(this.cells[i], this.cells[i].nextState);
+      }
     }
   } // end
 
-}; // end of object
+}; // end of the grid object
