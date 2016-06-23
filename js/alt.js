@@ -161,8 +161,8 @@ var grid = {
         }
       }
 
-    }, interval);
+    }, interval); // end of interval
 
-  },
+  }, // end
 
 }; // end of the grid object
