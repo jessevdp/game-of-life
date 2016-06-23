@@ -22,7 +22,6 @@ html, body{
 
 .cell{
   display: inline-block;
-  background-color: red;
   border-radius: 100%;
   background-color: #6f6f6f;
   opacity: 0.5;
