@@ -23,7 +23,7 @@ html, body{
 .cell{
   display: inline-block;
   border-radius: 100%;
-  background-color: #6f6f6f;
+  background-color: #5c5c5c;
   opacity: 0.5;
 }
 .alive{
