@@ -142,6 +142,12 @@ var grid = {
     }
   }, // end
 
+  clearGrid: function() {
+    for (var i = 1; i < (this.amount*this.amount)+1; i++) {
+      this.setState(this.cells[i], 0);
+    }
+  }, // end
+
   updateDiameter: function(interval) {
     // SAFETY!, inside the interval 'this' becomes the window
     // object instead of the grid object. We can now use 'self'.
