@@ -49,21 +49,36 @@ function init(interval) {
     }
   });
 
-  var cell = $('.cell');
-  cell.click(function() {
-    var id = $(this).attr('id');
+  $('.cell').click( (event) => {
+
+    var id = $(event.target).attr('id');
     var gcell = grid.cells[id];
 
     if ($('.controls').hasClass('save')) {
-
       if (gcell.state == 1) {
         grid.setState(gcell, 0);
-      }else {
+      } else {
         grid.setState(gcell, 1);
       }
     }
 
   });
+
+  // Check if the mouse button is down or not.
+  var isMouseDown = false;
+  $(document).mousedown( () => {
+    isMouseDown = true;
+  })
+  .mouseup( () => {
+    isMouseDown = false;
+  })
+
+  // Trigger click event if the mouse enters the
+  // cell while the mouse button is down.
+  $(".cell").mouseenter((e) => {
+    if (isMouseDown) $(e.target).click();
+  })
+
   $('.trash').click(function() {
     if ($('.controls').hasClass('save')) {
       grid.clearGrid();
