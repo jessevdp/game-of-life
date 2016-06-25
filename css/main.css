@@ -22,14 +22,14 @@ html, body {
 .trash {
   position: absolute;
   top: 2em;
-  left: 2%;
+  left: 2em;
   color: #fff;
   opacity: 0.5;
 }
 .controls {
   position: absolute;
   top: 2em;
-  right: 2%;
+  right: 2em;
   color: #fff;
   opacity: 0.5;
   z-index: 1;
