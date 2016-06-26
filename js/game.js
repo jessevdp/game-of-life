@@ -33,6 +33,7 @@ Game.switchMode = function () {
     // Adding the save icon.
     controls.append($('<i class="fa fa-play fa-2x"></i>'));
     $('.trash').append($('<i class="fa fa-trash fa-2x"></i>'));
+    $('.random').append($('<i class="fa fa-random fa-2x"></i>'));
 
     return 'clear';
   } else {
@@ -44,6 +45,7 @@ Game.switchMode = function () {
     // Adding the pencil icon.
     controls.append($('<i class="fa fa-pencil-square fa-2x"></i>'))
     $('.trash').empty();
+    $('.random').empty();
 
     return 'set';
   }
@@ -72,6 +74,15 @@ Game.switchState = function (thisCell) {
 Game.trash = function () {
   if ($('.controls').hasClass('save')) {
     Grid.clearGrid();
+  }
+}
+
+/**
+ * Draw a random grid if edit mode is active.
+ */
+Game.randomGrid = function () {
+  if ($('.controls').hasClass('save')) {
+    Grid.randomGrid();
   }
 }
 
@@ -156,6 +167,11 @@ Game.registerEvents = function () {
   // Trash game grid on click.
   $('.trash').click( () => {
     Game.trash();
+  });
+
+  // Randomize game grid on click.
+  $('.random').click( () => {
+    Game.randomGrid();
   });
 
   // Check if the mouse button is down or not.
