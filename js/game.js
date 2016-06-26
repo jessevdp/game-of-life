@@ -83,6 +83,7 @@ Game.trash = function () {
 Game.init = function (settings, callback) {
 
   // Set default values if no setting is defined.
+  if (!settings) settings = {};
   if (!settings.gameInterval) settings.gameInterval = 200;
   if (!settings.diameterInterval) settings.diameterInterval = 250;
   if (!settings.width) settings.width = 50;
@@ -105,7 +106,7 @@ Game.init = function (settings, callback) {
   }, this.settings.gameInterval);
 
   // Return to callback.
-  callback();
+  if (callback) callback();
 }
 
 /**
