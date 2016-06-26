@@ -101,7 +101,7 @@ Grid.drawGrid = function () {
     // Creating an empty object for every line or y coordinate.
     this.YX[i] = {};
 
-    for (var j = 1; j < this.amount+1; j++) {
+    for (var j = 1; j < this.amount + 1; j++) {
 
       // This number is used in making the 'cells' object,
       // no number can be the same. Soo +1;
