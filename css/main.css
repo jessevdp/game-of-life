@@ -33,7 +33,7 @@ body {
   text-align: center;
 }
 
-.trash,
+.options i,
 .controls {
   cursor: pointer;
 }
@@ -44,6 +44,9 @@ body {
   left: 2em;
   color: #fff;
   opacity: 0.5;
+}
+.options i{
+  padding: 2px;
 }
 
 .controls {
