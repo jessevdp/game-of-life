@@ -109,6 +109,25 @@ Game.init = function (settings, callback) {
 }
 
 /**
+ * Stop the Game.
+ */
+Game.stop = function () {
+
+  clearInterval(Game.interval);
+  clearInterval(Grid.interval);
+
+  Grid.clearGrid();
+  Grid.cells = {};
+  Grid.YX = {};
+  Grid.diameter = null;
+
+  $("#grid").html("");
+
+  console.log("Game has been stopped.");
+
+}
+
+/**
  * Register all event listeners.
  * Returns all listener objects.
  * @return Object
