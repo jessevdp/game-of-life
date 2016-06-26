@@ -83,6 +83,7 @@ Game.trash = function () {
 Game.init = function (settings, callback) {
 
   // Set default values if no setting is defined.
+  if (!settings) settings = {};
   if (!settings.gameInterval) settings.gameInterval = 200;
   if (!settings.diameterInterval) settings.diameterInterval = 250;
   if (!settings.width) settings.width = 50;
@@ -105,7 +106,26 @@ Game.init = function (settings, callback) {
   }, this.settings.gameInterval);
 
   // Return to callback.
-  callback();
+  if (callback) callback();
+}
+
+/**
+ * Stop the Game.
+ */
+Game.stop = function () {
+
+  clearInterval(Game.interval);
+  clearInterval(Grid.interval);
+
+  Grid.clearGrid();
+  Grid.cells = {};
+  Grid.YX = {};
+  Grid.diameter = null;
+
+  $("#grid").html("");
+
+  console.log("Game has been stopped.");
+
 }
 
 /**
