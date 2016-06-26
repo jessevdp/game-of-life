@@ -38,7 +38,7 @@ body {
   cursor: pointer;
 }
 
-.trash {
+.options {
   position: absolute;
   top: 2em;
   left: 2em;
