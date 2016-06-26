@@ -1,11 +1,27 @@
-function playGame() {
-  for (var i = 1; i < grid.amount*grid.amount+1; i++) {
-    grid.checkNeighbours(grid.cells[i]);
-    grid.nextStates(grid.cells[i]);
+/**
+ * Conway's Game of Life in JS
+ * https://git.io/gameoflife
+ * MIT Licensed - GoL.js (c) 2016
+ */
+
+var Game = {};
+Game.settings = {};
+
+/**
+ * Play a game step.
+ */
+Game.play = function () {
+  for (var i = 1; i < Grid.amount * Grid.amount + 1; i++) {
+    Grid.checkNeighbours(Grid.cells[i]);
+    Grid.nextStates(Grid.cells[i]);
   } // end of for loop
-  grid.gameStep();
+  Grid.gameStep();
 }
-function switchMode() {
+
+/**
+ * Switch between edit and play modes.
+ */
+Game.switchMode = function () {
   var controls = $('.controls');
 
   if (controls.hasClass('edit')) {
@@ -19,7 +35,7 @@ function switchMode() {
     $('.trash').append($('<i class="fa fa-trash fa-2x"></i>'));
 
     return 'clear';
-  }else {
+  } else {
     // Removing the save class and adding the edit class
     controls.removeClass('save');
     controls.addClass('edit');
@@ -32,83 +48,128 @@ function switchMode() {
     return 'set';
   }
 }
-function switchState(thisCell) {
+
+/**
+ * Switch the state of the given cell.
+ * @param Element thisCell
+ */
+Game.switchState = function (thisCell) {
   var id = $(thisCell).attr('id');
-  var gcell = grid.cells[id];
+  var gcell = Grid.cells[id];
 
   if ($('.controls').hasClass('save')) {
     if (gcell.state == 1) {
-      grid.setState(gcell, 0);
+      Grid.setState(gcell, 0);
     }else {
-      grid.setState(gcell, 1);
+      Grid.setState(gcell, 1);
     }
   }
 }
-function trash() {
+
+/**
+ * Clear the grid if edit mode is active.
+ */
+Game.trash = function () {
   if ($('.controls').hasClass('save')) {
-    grid.clearGrid();
+    Grid.clearGrid();
   }
 }
 
-function init(interval) {
+/**
+ * Initialize the game.
+ * @param Object settings
+ * @param Function callback
+ */
+Game.init = function (settings, callback) {
 
-  grid.setAmount(30);
-  grid.drawGrid();
-  grid.randomGrid();
-  grid.updateDiameter(250);
+  // Set default values if no setting is defined.
+  if (!settings.gameInterval) settings.gameInterval = 200;
+  if (!settings.diameterInterval) settings.diameterInterval = 250;
+  if (!settings.width) settings.width = 50;
+  if (!settings.height) settings.height = 50;
 
-  var game = window.setInterval(function() {
-    playGame();
-  },interval);
+  // Put settings in Game object.
+  Game.settings.gameInterval = settings.gameInterval;
+  Game.settings.diameterInterval = settings.diameterInterval;
+  Game.settings.width = settings.width;
+  Game.settings.height = settings.height;
 
-  $('.controls').click(function() {
-    if(switchMode() === 'clear'){
-      clearInterval(game);
-    }else {
-      game = window.setInterval(function() {
-        playGame();
-      },interval);
+  // Initialize the Grid.
+  Grid.drawGrid();
+  Grid.randomGrid();
+  Grid.updateDiameter();
+
+  // Initialize Game tick.
+  Game.interval = window.setInterval( () => {
+    Game.play();
+  }, this.settings.gameInterval);
+
+  // Return to callback.
+  callback();
+}
+
+/**
+ * Register all event listeners.
+ * Returns all listener objects.
+ * @return Object
+ */
+Game.registerEvents = function () {
+
+  // Switch between edit and play modes.
+  $('.controls').click( () => {
+    if (Game.switchMode() === 'clear') {
+      clearInterval(Game.interval);
+    } else {
+      Game.interval = window.setInterval( () => {
+        Game.play();
+      }, Game.settings.gameInterval);
     }
   });
-  $('.cell').click(function(){
-    var thisCell = this;
-    switchState(thisCell);
+
+  // Switch cell state on click.
+  $('.cell').click( (e) => {
+    console.log(e.target);
+    var thisCell = e.target;
+    Game.switchState(thisCell);
   });
-  $('.trash').click(function() {
-    trash();
+
+  // Trash game grid on click.
+  $('.trash').click( () => {
+    Game.trash();
   });
 
   // Check if the mouse button is down or not.
-var isMouseDown = false;
-$(document).mousedown( () => {
-  isMouseDown = true;
-})
-.mouseup( () => {
-  isMouseDown = false;
-})
+  Game.isMouseDown = false;
+  $(document).mousedown( () => {
+    Game.isMouseDown = true;
+  })
+  .mouseup( () => {
+    Game.isMouseDown = false;
+  })
 
-// Trigger click event if the mouse enters the
-// cell while the mouse button is down.
-$(".cell").mouseenter((e) => {
-  if (isMouseDown) $(e.target).click();
-})
+  // Trigger click event if the mouse enters the
+  // cell while the mouse button is down.
+  $(".cell").mouseenter((e) => {
+    if (Game.isMouseDown) $(e.target).click();
+  });
 
-$('.trash').click(function() {
-  if ($('.controls').hasClass('save')) {
-    grid.clearGrid();
-  }
+}
+
+/**
+ * Initialize game and event listeners on page load.
+ */
+$(document).ready( () => {
+  Game.init({ width: 30, height: 30 }, () => {
+    Game.registerEvents();
+  });
 });
 
-} // end of function
 
-$(document).ready(function(){
-
-  init(200);
-
-});
-
-// --- THE RULES ---
-// Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure[1]).
-// Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
-// Any live cell with two or three live neighbours lives, unchanged, to the next generation.
-// Any dead cell with exactly three live neighbours will come to life.
+/****************************************************************************************************************
+ *                                                   THE RULES
+ *  - Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure).
+ *  - Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
+ *  - Any live cell with two or three live neighbours lives, unchanged, to the next generation.
+ *  - Any dead cell with exactly three live neighbours will come to life.
+ *
+ ****************************************************************************************************************/
