@@ -44,6 +44,7 @@ Game.switchMode = function () {
     controls.empty();
     // Adding the pencil icon.
     controls.append($('<i class="fa fa-pencil-square fa-2x"></i>'))
+    // Emptying .trash and .random Div
     $('.trash').empty();
     $('.random').empty();
 
@@ -159,7 +160,6 @@ Game.registerEvents = function () {
 
   // Switch cell state on click.
   $('.cell').click( (e) => {
-    console.log(e.target);
     var thisCell = e.target;
     Game.switchState(thisCell);
   });
