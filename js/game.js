@@ -98,18 +98,23 @@ Game.init = function (settings, callback) {
   if (!settings) settings = {};
   if (!settings.gameInterval) settings.gameInterval = 200;
   if (!settings.diameterInterval) settings.diameterInterval = 250;
+  if (!settings.random) settings.random = 'yes';
   if (!settings.width) settings.width = 50;
   if (!settings.height) settings.height = 50;
 
   // Put settings in Game object.
   Game.settings.gameInterval = settings.gameInterval;
   Game.settings.diameterInterval = settings.diameterInterval;
+  Game.settings.random = settings.random;
   Game.settings.width = settings.width;
   Game.settings.height = settings.height;
 
   // Initialize the Grid.
   Grid.drawGrid();
-  Grid.randomGrid();
+  // Checking if a random grid should be made.
+  if (this.settings.random == 'yes') {
+    Grid.randomGrid();
+  }
   Grid.updateDiameter();
 
   // Initialize Game tick.
@@ -129,6 +134,8 @@ Game.stop = function () {
   clearInterval(Game.interval);
   clearInterval(Grid.interval);
 
+  Game.switchMode();
+
   Grid.clearGrid();
   Grid.cells = {};
   Grid.YX = {};
@@ -138,6 +145,23 @@ Game.stop = function () {
 
   console.log("Game has been stopped.");
 
+}
+
+/**
+ * Set the game to a new Amount of cells.
+ */
+Game.newAmount = function (amount) {
+  if (typeof(amount) != "number") {
+    throw amount+' is not a valid amount'
+  }
+  if (Grid.amount == undefined) {
+    Grid.amount = amount;
+  }else {
+    if (Grid.amount != amount) {
+      this.stop();
+      this.init({ width: amount, random: 'yes'});
+    }
+  }
 }
 
 /**
