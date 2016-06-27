@@ -36,7 +36,7 @@ Grid.randomState = function () {
   // If its even the random state will be 1 else it will be 0
 
   // This is because just rounding off a random number gives more ones than
-  // zeros.
+  // zero's.
   var randomNum = Math.round( Math.random() * 1000 );
   if (randomNum % 2 == 0) {
     var state = 1;
