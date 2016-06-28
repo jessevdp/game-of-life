@@ -148,23 +148,6 @@ Game.stop = function () {
 }
 
 /**
- * Set the game to a new Amount of cells.
- */
-Game.newAmount = function (amount) {
-  if (typeof(amount) != "number") {
-    throw amount+' is not a valid amount'
-  }
-  if (Grid.amount == undefined) {
-    Grid.amount = amount;
-  }else {
-    if (Grid.amount != amount) {
-      this.stop();
-      this.init({ width: amount, random: 'yes'});
-    }
-  }
-}
-
-/**
  * Register all event listeners.
  * Returns all listener objects.
  * @return Object
@@ -213,4 +196,21 @@ Game.registerEvents = function () {
     if (Game.isMouseDown) $(e.target).click();
   });
 
+}
+
+/**
+ * Set the game to a new Amount of cells.
+ */
+Game.newAmount = function (amount) {
+  if (typeof(amount) != "number") {
+    throw amount+' is not a valid amount'
+  }
+  if (Grid.amount == undefined) {
+    Grid.amount = amount;
+  }else {
+    if (Grid.amount != amount) {
+      this.stop();
+      this.init({ width: amount, random: 'no'});
+    }
+  }
 }
