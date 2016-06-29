@@ -1,18 +1,31 @@
-html, body{
+/**
+ * Conway's Game of Life in JS
+ * https://git.io/gameoflife
+ * MIT Licensed - GoL.js (c) 2016
+ */
+
+html,
+body {
   height: 100%;
   line-height: 0px;
   background-color: #1f1f1f;
   margin: 0px;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
-.outer{
+.outer {
   display: table;
   position: absolute;
   height: 100%;
   width: 100%;
 }
 
-#grid{
+#grid {
   display: table-cell;
   vertical-align: middle;
   margin-left: auto;
@@ -20,16 +33,61 @@ html, body{
   text-align: center;
 }
 
-.cell{
+.options i,
+.controls {
+  cursor: pointer;
+}
+
+.options {
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  color: #fff;
+  opacity: 0.5;
+}
+.options i{
+  padding: 2px;
+}
+
+.controls {
+  position: absolute;
+  top: 2em;
+  right: 2em;
+  color: #fff;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.controls i {
+  padding: 4px;
+}
+
+.cell {
   display: inline-block;
   border-radius: 100%;
   background-color: #5c5c5c;
   opacity: 0.5;
 }
-.alive{
+
+.alive {
   background-color: #e300ff;
   opacity: 0.7;
 }
-.dead{
+
+.dead {
   background-color: #5c5c5c;
+}
+
+/* =================
+    RESPONSIVE CSS
+   =================*/
+@media screen and (max-width: 768px) {
+  .controls{
+    top: 1em;
+    right: 1em;
+  }
+  .options {
+    top: 1em;
+    left: 1em;
+  }
 }
