@@ -13,7 +13,7 @@ function isInt(n){
  * Makes a code representing the grids values, creating a long string.
  * Returns this string.
  */
-codes.makeCode = function() {
+Codes.makeCode = function() {
   var c = '';
   for (var i = 1; i < (Grid.amount*Grid.amount)+1; i++) {
     c = c+Grid.cells[i].state.toString()
@@ -25,7 +25,7 @@ codes.makeCode = function() {
  * Compresses the a binary string into a hex string.
  * Returns the compressed string.
  */
-codes.compress = function(bin) {
+Codes.compress = function(bin) {
   bin = bin.toString(); // To make sure the binary is a string;
   var returnValue = ''; // Empty string to add our data to later on.
 
