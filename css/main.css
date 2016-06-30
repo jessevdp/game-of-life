@@ -54,6 +54,7 @@ body {
   color: #fff;
   opacity: 0.5;
   text-align: center;
+  z-index: 2;
 }
 .options i{
   padding: 2px;
