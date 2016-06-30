@@ -130,17 +130,21 @@ Codes.readCode =  function(code) {
     Grid.setState(Grid.cells[j], codeArr[i])
   }
 }
-
+/**
+ * Generates an URL that will link to the current grid.
+ * Returns this URL.
+ */
 Codes.generateURL = function() {
   var code = Codes.makeCode();
   var hash = Codes.compress(code);
   var returnURL = baseURL+'/?hash='+hash;
   return returnURL;
 }
-
+/**
+ * Loads a grid based on the hash parameter in the URL.
+ */
 Codes.importFromURL = function () {
   var params = url2params();
-  console.log(params);
   var decomHash = this.decompress(params.hash);
   this.readCode(decomHash);
 }
