@@ -7,8 +7,8 @@
 /**
  * Initialize game and event listeners on page load.
  */
-$(document).ready( () => {
-  Game.init({ width: 30, height: 30 }, () => {
+$(document).ready(function () {
+  Game.init({ width: 30, height: 30 },function () {
     Game.registerEvents();
   });
 });

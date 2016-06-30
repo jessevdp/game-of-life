@@ -118,7 +118,7 @@ Game.init = function (settings, callback) {
   Grid.updateDiameter();
 
   // Initialize Game tick.
-  Game.interval = window.setInterval( () => {
+  Game.interval = window.setInterval(function() {
     Game.play();
   }, this.settings.gameInterval);
 
@@ -155,44 +155,44 @@ Game.stop = function () {
 Game.registerEvents = function () {
 
   // Switch between edit and play modes.
-  $('.controls').click( () => {
+  $('.controls').click(function () {
     if (Game.switchMode() === 'clear') {
       clearInterval(Game.interval);
     } else {
-      Game.interval = window.setInterval( () => {
+      Game.interval = window.setInterval(function () {
         Game.play();
       }, Game.settings.gameInterval);
     }
   });
 
   // Switch cell state on click.
-  $('.cell').click( (e) => {
+  $('.cell').click(function (e) {
     var thisCell = e.target;
     Game.switchState(thisCell);
   });
 
   // Trash game grid on click.
-  $('.trash').click( () => {
+  $('.trash').click(function () {
     Game.trash();
   });
 
   // Randomize game grid on click.
-  $('.random').click( () => {
+  $('.random').click(function () {
     Game.randomGrid();
   });
 
   // Check if the mouse button is down or not.
   Game.isMouseDown = false;
-  $(document).mousedown( () => {
+  $(document).mousedown(function () {
     Game.isMouseDown = true;
   })
-  .mouseup( () => {
+  .mouseup(function () {
     Game.isMouseDown = false;
   })
 
   // Trigger click event if the mouse enters the
   // cell while the mouse button is down.
-  $(".cell").mouseenter((e) => {
+  $(".cell").mouseenter( function(e) {
     if (Game.isMouseDown) $(e.target).click();
   });
 

@@ -41,7 +41,6 @@ Codes.compress = function(bin) {
     bin = '0'+bin;
   }
 
-
   for (var i = 0; i < parseInt(bin.length / 8); i++) {
     // Determining the substring.
     var substring = bin.substr(i*8, 8)
@@ -54,11 +53,9 @@ Codes.compress = function(bin) {
     returnValue += hexValue;
   }
 
-
   // Adding the number of leading 0s that need to be ignored when decompressing
   // to the hex string.
   returnValue = padding+'-'+returnValue;
-
 
   // Returning the to hex compressed string.
   return returnValue;
@@ -68,7 +65,7 @@ Codes.compress = function(bin) {
  * decompresses the compressed hex string back into a binary string.
  * Returns the decompressed string.
  */
-Codes.decompress = function(compressedCode) {
+Codes.decompress = function(compressed) {
   var returnValue = ''; // Empty string to add our data to later on.
 
   // Splitting the input on '-' to seperate the number of paddin 0s and the actual hex code.
@@ -100,7 +97,6 @@ Codes.decompress = function(compressedCode) {
   }
 
   var decompressedArr = returnValue.split('');
-  console.log(decompressedArr);
   returnValue = ''; // Emptying the return variable.
   for (var i = paddingAmount; i < decompressedArr.length; i++) {
     returnValue += decompressedArr[i];
