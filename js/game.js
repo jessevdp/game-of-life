@@ -98,22 +98,25 @@ Game.init = function (settings, callback) {
   if (!settings) settings = {};
   if (!settings.gameInterval) settings.gameInterval = 200;
   if (!settings.diameterInterval) settings.diameterInterval = 250;
-  if (!settings.random) settings.random = 'yes';
+  if (!settings.mode) settings.mode = 'random';
   if (!settings.width) settings.width = 50;
   if (!settings.height) settings.height = 50;
 
   // Put settings in Game object.
   Game.settings.gameInterval = settings.gameInterval;
   Game.settings.diameterInterval = settings.diameterInterval;
-  Game.settings.random = settings.random;
+  Game.settings.mode = settings.mode;
   Game.settings.width = settings.width;
   Game.settings.height = settings.height;
 
   // Initialize the Grid.
   Grid.drawGrid();
   // Checking if a random grid should be made.
-  if (this.settings.random == 'yes') {
+  if (this.settings.mode == 'random') {
     Grid.randomGrid();
+  }
+  if (this.settings.mode == 'hash') {
+    Codes.importFromURL();
   }
   Grid.updateDiameter();
 

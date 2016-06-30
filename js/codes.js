@@ -5,6 +5,9 @@
  */
 var Codes = {};
 
+// The base url of the project. Used to generate an url with the grid code.
+var baseURL = 'goljs.github.io/GoL';
+
 /**
  * Makes a code representing the grids values, creating a long string.
  * Returns this string.
@@ -126,4 +129,18 @@ Codes.readCode =  function(code) {
     var j = i+1;
     Grid.setState(Grid.cells[j], codeArr[i])
   }
+}
+
+Codes.generateURL = function() {
+  var code = Codes.makeCode();
+  var hash = Codes.compress(code);
+  var returnURL = baseURL+'/?hash='+hash;
+  return returnURL;
+}
+
+Codes.importFromURL = function () {
+  var params = url2params();
+  console.log(params);
+  var decomHash = this.decompress(params.hash);
+  this.readCode(decomHash);
 }
