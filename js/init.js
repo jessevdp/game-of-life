@@ -11,7 +11,7 @@ $(document).ready(function () {
   var settings = { width: 30, height: 30 };
   if (urlHasParams()) settings.type = 'hash';
   Game.init(settings,function () {
-    if (settings.type) Game.togglePause();
+    if (urlHasParams()) Game.togglePause();
     Game.registerEvents();
   });
 });
