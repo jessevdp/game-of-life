@@ -98,9 +98,9 @@ Game.init = function (settings, callback) {
   if (!settings) settings = {};
   if (!settings.gameInterval) settings.gameInterval = 200;
   if (!settings.diameterInterval) settings.diameterInterval = 250;
-  if (!settings.mode) settings.mode = 'random';
   if (!settings.width) settings.width = 50;
   if (!settings.height) settings.height = 50;
+  if (!settings.type) settings.type = "random";
 
   // Put settings in Game object.
   Game.settings.gameInterval = settings.gameInterval;
@@ -108,16 +108,23 @@ Game.init = function (settings, callback) {
   Game.settings.mode = settings.mode;
   Game.settings.width = settings.width;
   Game.settings.height = settings.height;
+  Game.settings.type = settings.type;
 
   // Initialize the Grid.
   Grid.drawGrid();
-  // Checking if a random grid should be made.
-  if (this.settings.mode == 'random') {
+
+  // Check what game type was requested.
+  if (this.settings.type == 'random') {
     Grid.randomGrid();
   }
-  if (this.settings.mode == 'hash') {
+  else if (this.settings.type == 'hash') {
     Codes.importFromURL();
   }
+  else {
+    throw "Unknown game type for settings.type";
+  }
+
+  // Update the cell diameter on window width change.
   Grid.updateDiameter();
 
   // Initialize Game tick.
@@ -151,6 +158,19 @@ Game.stop = function () {
 }
 
 /**
+ * Pause or un-pause the Game.
+ */
+Game.togglePause = function () {
+  if (Game.switchMode() === 'clear') {
+    clearInterval(Game.interval);
+  } else {
+    Game.interval = window.setInterval(function () {
+      Game.play();
+    }, Game.settings.gameInterval);
+  }
+}
+
+/**
  * Register all event listeners.
  * Returns all listener objects.
  * @return Object
@@ -159,13 +179,7 @@ Game.registerEvents = function () {
 
   // Switch between edit and play modes.
   $('.controls').click(function () {
-    if (Game.switchMode() === 'clear') {
-      clearInterval(Game.interval);
-    } else {
-      Game.interval = window.setInterval(function () {
-        Game.play();
-      }, Game.settings.gameInterval);
-    }
+    Game.togglePause();
   });
 
   // Switch cell state on click.
