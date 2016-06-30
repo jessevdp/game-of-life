@@ -34,6 +34,7 @@ Game.switchMode = function () {
     controls.append($('<i class="fa fa-play fa-2x"></i>'));
     $('.trash').append($('<i class="fa fa-trash fa-2x"></i>'));
     $('.random').append($('<i class="fa fa-random fa-2x"></i>'));
+    $('.share').append($('<i class="fa fa-share-square-o fa-2x"></i>'));
 
     return 'clear';
   } else {
@@ -47,6 +48,7 @@ Game.switchMode = function () {
     // Emptying .trash and .random Div
     $('.trash').empty();
     $('.random').empty();
+    $('.share').empty();
 
     return 'set';
   }
@@ -170,6 +172,12 @@ Game.togglePause = function () {
   }
 }
 
+Game.copyAlert = function () {
+  var $copyAlert = $('.copyAlert');
+  $copyAlert.show();
+  $copyAlert.fadeOut(2000);
+}
+
 /**
  * Register all event listeners.
  * Returns all listener objects.
@@ -196,6 +204,12 @@ Game.registerEvents = function () {
   // Randomize game grid on click.
   $('.random').click(function () {
     Game.randomGrid();
+  });
+
+  // Copy sharable 'grid' link to clipboard on click.
+  $('.share').click(function () {
+    copyTextToClipboard(Codes.generateURL());
+    Game.copyAlert();
   });
 
   // Check if the mouse button is down or not.
