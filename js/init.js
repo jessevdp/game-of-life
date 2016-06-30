@@ -8,7 +8,10 @@
  * Initialize game and event listeners on page load.
  */
 $(document).ready(function () {
-  Game.init({ width: 30, height: 30 },function () {
+  if (urlHasParams) {
+    var initMode = 'hash';
+  }
+  Game.init({ width: 30, height: 30, mode: initMode },function () {
     Game.registerEvents();
   });
 });

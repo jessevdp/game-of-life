@@ -1,13 +1,12 @@
+/**
+ * Conway's Game of Life in JS
+ * https://git.io/gameoflife
+ * MIT Licensed - GoL.js (c) 2016
+ */
 var Codes = {};
 
-
-/**
- * Checks if the input is an integer.
- * Returns true or false.
- */
-function isInt(n){
-    return Number(n) === n && n % 1 === 0;
-}
+// The base url of the project. Used to generate an url with the grid code.
+var baseURL = 'goljs.github.io/GoL';
 
 /**
  * Makes a code representing the grids values, creating a long string.
@@ -130,4 +129,18 @@ Codes.readCode =  function(code) {
     var j = i+1;
     Grid.setState(Grid.cells[j], codeArr[i])
   }
+}
+
+Codes.generateURL = function() {
+  var code = Codes.makeCode();
+  var hash = Codes.compress(code);
+  var returnURL = baseURL+'/?hash='+hash;
+  return returnURL;
+}
+
+Codes.importFromURL = function () {
+  var params = url2params();
+  console.log(params);
+  var decomHash = this.decompress(params.hash);
+  this.readCode(decomHash);
 }
