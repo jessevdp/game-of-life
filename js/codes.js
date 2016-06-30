@@ -1,13 +1,9 @@
-var Codes = {};
-
-
 /**
- * Checks if the input is an integer.
- * Returns true or false.
+ * Conway's Game of Life in JS
+ * https://git.io/gameoflife
+ * MIT Licensed - GoL.js (c) 2016
  */
-function isInt(n){
-    return Number(n) === n && n % 1 === 0;
-}
+var Codes = {};
 
 /**
  * Makes a code representing the grids values, creating a long string.
