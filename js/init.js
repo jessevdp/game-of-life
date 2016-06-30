@@ -10,6 +10,8 @@
 $(document).ready(function () {
   if (urlHasParams) {
     var initMode = 'hash';
+  }else {
+    var initMode= 'random';
   }
   Game.init({ width: 30, height: 30, mode: initMode },function () {
     Game.registerEvents();
