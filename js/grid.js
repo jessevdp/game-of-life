@@ -182,7 +182,7 @@ Grid.updateDiameter = function () {
   // object instead of the grid object. We can now use 'self'.
   var self = this;
 
-  Grid.interval = window.setInterval( () => {
+  Grid.interval = window.setInterval(function () {
 
     var oldDiameter = self.diameter;
     self.setDiameter();
