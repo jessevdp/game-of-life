@@ -6,7 +6,7 @@
 var Codes = {};
 
 // The base url of the project. Used to generate an url with the grid code.
-var baseURL = 'goljs.github.io/GoL';
+var baseURL = 'gol.js.org';
 
 /**
  * Makes a code representing the grids values, creating a long string.
