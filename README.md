@@ -13,3 +13,6 @@ See it in action at https://gol.js.org
 - Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
 - Any live cell with two or three live neighbours lives, unchanged, to the next generation.
 - Any dead cell with exactly three live neighbours will come to life.
+
+### License
+This project is licensed under the MIT License. You can read the full license [here](LICENSE).
