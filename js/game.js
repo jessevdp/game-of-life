@@ -208,8 +208,10 @@ Game.registerEvents = function () {
 
   // Copy sharable 'grid' link to clipboard on click.
   $('.share').click(function () {
-    copyTextToClipboard(Codes.generateURL());
-    Game.copyAlert();
+    Codes.generateURL(function (url) {
+      copyTextToClipboard(url);
+      Game.copyAlert();
+    });
   });
 
   // Check if the mouse button is down or not.

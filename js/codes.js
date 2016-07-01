@@ -6,7 +6,7 @@
 var Codes = {};
 
 // The base url of the project. Used to generate an url with the grid code.
-var baseURL = 'gol.js.org';
+var baseURL = 'https://gol.js.org';
 
 /**
  * Makes a code representing the grids values, creating a long string.
@@ -130,15 +130,71 @@ Codes.readCode =  function(code) {
     Grid.setState(Grid.cells[j], codeArr[i])
   }
 }
+
+/**
+ * Shorten long url with is.gd's API.
+ * @param String url
+ * @param Function callback
+ * @param Integer retry
+ * @returns void
+ * @async true
+ */
+Codes.shortenURL = function (url, callback, retry) {
+
+  // Set the retry value to one if no value was provided.
+  if (!retry) retry = 1;
+
+  // Generate a random short url.
+  var short = "goljs_"+ Math.round( Math.random() * (10000*retry) );
+
+  // Set up the AJAX request.
+  $.ajax({
+    url: "https://is.gd/create.php?format=json&shorturl="+short+"&url="+encodeURIComponent(url),
+    type: "GET",
+    dataType: "json"
+  })
+
+  // Handle a failed request.
+  .fail(function (xhr, status, error) {
+    console.log("Shortening URL failed, falling back to long url.");
+    console.warn(xhr, status, error);
+    callback(url);
+  })
+
+  // Handle a successful request.
+  .done(function (data) {
+
+    // If the error code is 2 and we tried less than 5 times,
+    // retry the shortening with a new short url.
+    if (data.errorcode == 2 && retry <= 5) {
+      console.log("Shortening URL failed, duplicate. Retrying.");
+      return Codes.shortenURL(url, callback, retry+1);
+    }
+
+    // If we got a shorturl in the response, the magic worked.
+    else if (data.shorturl) {
+      console.log("Shortened URL ", data);
+      callback(data.shorturl);
+    }
+
+    // Else, something went wrong. Fall back to the long url.
+    else {
+      console.log("Shortening URL failed", data);
+      callback(url);
+    }
+  })
+}
+
 /**
  * Generates an URL that will link to the current grid.
  * Returns this URL.
+ * Async function.
  */
-Codes.generateURL = function() {
+Codes.generateURL = function(callback) {
   var code = Codes.makeCode();
   var hash = Codes.compress(code);
-  var returnURL = baseURL+'/?hash='+hash;
-  return returnURL;
+  var longURL = baseURL+'/?hash='+hash;
+  Codes.shortenURL(longURL, callback);
 }
 /**
  * Loads a grid based on the hash parameter in the URL.
