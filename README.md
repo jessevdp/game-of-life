@@ -1,7 +1,7 @@
 # GoL
 [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) in Javascript.
 
-See it in action at https://goljs.github.io/GoL
+See it in action at https://gol.js.org
 
 ### Features
 - Paint your own start position or let the game generate a random one.
