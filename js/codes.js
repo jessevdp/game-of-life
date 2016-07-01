@@ -52,16 +52,67 @@ Codes.compress = function(bin) {
     returnValue += hexValue;
   }
 
-  // Adding the number of leading 0s that need to be ignored when decompressing
-  // to the hex string.
+  // Compressing the hex string even further.
+  // If there's any double hex chars in the string it will take those and compress those into 1 char.
+  // Then if we have multiple of those chars these are compressed into 1 char again.
+  // For example: the hex string "ff will result in a "v" and "ffff" will result in a "V".
+  // Also: "11" will result in a "h" and "1111" will result in a "H"
+  // For the 0s this process is repeated a few times.
+  // "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  // (string with 4096 0s) (this would represent a 64*64 EMPTY grid)
+  // will result in a "Z".
+  var returnValue = returnValue.replace(/00/g, 'g')
+                               .replace(/gg/g, 'G')
+                              // Since 0s are probably more likely to exist in our binary and hex, we go a step further compressing them like this:
+                               .replace(/GG/g, 'w')
+                               .replace(/ww/g, 'W')
+                               .replace(/WW/g, 'x')
+                               .replace(/xx/g, 'X')
+                               .replace(/XX/g, 'y')
+                               .replace(/yy/g, 'Y')
+                               .replace(/YY/g, 'z')
+                               .replace(/zz/g, 'Z')
+                               //Rest of the chars...
+                               .replace(/11/g, 'h')
+                               .replace(/hh/g, 'H')
+                               .replace(/22/g, 'i')
+                               .replace(/ii/g, 'I')
+                               .replace(/33/g, 'j')
+                               .replace(/jj/g, 'J')
+                               .replace(/44/g, 'k')
+                               .replace(/kk/g, 'K')
+                               .replace(/55/g, 'l')
+                               .replace(/ll/g, 'L')
+                               .replace(/66/g, 'm')
+                               .replace(/mm/g, 'M')
+                               .replace(/77/g, 'n')
+                               .replace(/nn/g, 'N')
+                               .replace(/88/g, 'o')
+                               .replace(/oo/g, 'O')
+                               .replace(/99/g, 'p')
+                               .replace(/pp/g, 'P')
+                               .replace(/aa/g, 'q')
+                               .replace(/qq/g, 'Q')
+                               .replace(/bb/g, 'r')
+                               .replace(/rr/g, 'R')
+                               .replace(/cc/g, 's')
+                               .replace(/ss/g, 'S')
+                               .replace(/dd/g, 't')
+                               .replace(/tt/g, 'T')
+                               .replace(/ee/g, 'u')
+                               .replace(/uu/g, 'U')
+                               .replace(/ff/g, 'v')
+                               .replace(/vv/g, 'V');
+
+  // Adding the number of leading 0s that need to be ignored when decompressing to the string.
   returnValue = padding+'-'+returnValue;
 
-  // Returning the to hex compressed string.
+  // Returning the compressed string.
   return returnValue;
 }
 
 /**
- * decompresses the compressed hex string back into a binary string.
+ * Decompresses the compressed string back into a binary string.
  * Returns the decompressed string.
  */
 Codes.decompress = function(compressed) {
@@ -71,6 +122,50 @@ Codes.decompress = function(compressed) {
   var compressedArr = compressed.split('-');
   var paddingAmount = compressedArr[0]; // Setting a variable equal to the amount of leading 0s used while compressing.
   compressed = compressedArr[1]; // Setting the compressed variable to the actual hex code.
+
+  // Decompressing further compressed characters.
+  compressed = compressed// Decompressing the further compressed 0s. (even further then the rest of the chars.)
+                         .replace(/Z/g, 'zz')
+                         .replace(/z/g, 'YY')
+                         .replace(/Y/g, 'yy')
+                         .replace(/y/g, 'XX')
+                         .replace(/X/g, 'xx')
+                         .replace(/x/g, 'WW')
+                         .replace(/W/g, 'ww')
+                         .replace(/w/g, 'GG')
+                         .replace(/G/g, 'gg')
+                         .replace(/g/g, '00')
+                         // Rest of chars...
+                         .replace(/H/g, 'hh')
+                         .replace(/h/g, '11')
+                         .replace(/I/g, 'ii')
+                         .replace(/i/g, '22')
+                         .replace(/J/g, 'jj')
+                         .replace(/j/g, '33')
+                         .replace(/K/g, 'kk')
+                         .replace(/k/g, '44')
+                         .replace(/L/g, 'll')
+                         .replace(/l/g, '55')
+                         .replace(/M/g, 'mm')
+                         .replace(/m/g, '66')
+                         .replace(/N/g, 'nn')
+                         .replace(/n/g, '77')
+                         .replace(/O/g, 'oo')
+                         .replace(/o/g, '88')
+                         .replace(/P/g, 'pp')
+                         .replace(/p/g, '99')
+                         .replace(/Q/g, 'qq')
+                         .replace(/q/g, 'aa')
+                         .replace(/R/g, 'rr')
+                         .replace(/r/g, 'bb')
+                         .replace(/S/g, 'ss')
+                         .replace(/s/g, 'cc')
+                         .replace(/T/g, 'tt')
+                         .replace(/t/g, 'dd')
+                         .replace(/U/g, 'uu')
+                         .replace(/u/g, 'ee')
+                         .replace(/V/g, 'vv')
+                         .replace(/v/g, 'ff');
 
   for (var i = 0; i < parseInt(compressed.length / 2); i++) {
     // Determining the substring.
