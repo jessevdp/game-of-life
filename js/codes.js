@@ -141,7 +141,7 @@ Codes.readCode =  function(code) {
  */
 Codes.shortenURL = function (url, callback, retry) {
 
-  // Set the retry value to zero if it was not provided.
+  // Set the retry value to one if no value was provided.
   if (!retry) retry = 1;
 
   // Generate a random short url.
