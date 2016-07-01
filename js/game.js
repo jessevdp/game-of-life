@@ -209,8 +209,8 @@ Game.registerEvents = function () {
   // Copy sharable 'grid' link to clipboard on click.
   $('.share').click(function () {
     Codes.generateURL(function (url) {
-      copyTextToClipboard(url);
-      Game.copyAlert();
+      copyToClipboard(url);
+      //Game.copyAlert();
     });
   });
 
