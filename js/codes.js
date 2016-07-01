@@ -1,6 +1,6 @@
 /**
  * Conway's Game of Life in JS
- * https://git.io/gameoflife
+ * https://git.io/gol
  * MIT Licensed - GoL.js (c) 2016
  */
 var Codes = {};
