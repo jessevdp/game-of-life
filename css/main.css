@@ -38,9 +38,12 @@ body {
 /* Style of all "option butons". */
 .options,
 .controls,
-.share {
+.share,
+.info {
   /* Making sure bottons are on top of grid. */
   z-index: 2;
+
+  position: absolute;
   cursor: pointer;
   color: #fff;
   opacity: 0.5;
@@ -48,7 +51,6 @@ body {
 }
 /* Options in the top left corner. */
 .options {
-  position: absolute;
   top: 2em;
   left: 2em;
 }
@@ -59,16 +61,22 @@ body {
 
 /* Controls in the top right corner. */
 .controls {
-  position: absolute;
   top: 2em;
   right: 2em;
 }
 
 /* Share button in the bottom left corner */
 .share {
-  position: absolute;
   bottom: 2em;
   left: 2em;
+}
+
+.info {
+  bottom: 2em;
+  right: 2em;
+}
+.info a {
+  color: #fff;
 }
 
 /* Main cell styling */
@@ -89,6 +97,7 @@ body {
   opacity: 0.3;
 }
 
+
 /* =================
     RESPONSIVE CSS
    =================*/
@@ -105,5 +114,9 @@ body {
   .share {
     bottom: 1em;
     left: 1em;
+  }
+  .info {
+    bottom: 1em;
+    right: 1em;
   }
 }
