@@ -118,6 +118,7 @@ Game.init = function (settings, callback) {
   // Initialize the Grid.
   Grid.drawGrid();
 
+
   // Check what game type was requested.
   if (this.settings.type == 'random') {
     Grid.randomGrid();
@@ -134,10 +135,13 @@ Game.init = function (settings, callback) {
   // Update the cell diameter on window width change.
   Grid.updateDiameter();
 
-  // Initialize Game tick.
-  Game.interval = window.setInterval(function() {
-    Game.play();
-  }, this.settings.gameInterval);
+  if (this.settings.type != 'empty'){
+    // Initialize Game tick.
+    Game.interval = window.setInterval(function() {
+      Game.play();
+    }, this.settings.gameInterval);
+  }
+
 
   // Return to callback.
   if (callback) callback();
@@ -159,8 +163,6 @@ Game.stop = function () {
   Grid.diameter = null;
 
   $("#grid").html("");
-
-  console.log("Game has been stopped.");
 
 }
 
@@ -202,48 +204,16 @@ Game.getNewSize = function(callback) {
   }
   callback(returnValue);
 }
-
 /**
- * Register all event listeners.
- * Returns all listener objects.
- * @return Object
+ * All .cell clicking events.
+ * (seperate function from other registerEvents, since these need to be re-envoked)
  */
-Game.registerEvents = function () {
-
-  // Switch between edit and play modes.
-  $('.controls').click(function () {
-    Game.togglePause();
-  });
+Game.cellClick = function() {
 
   // Switch cell state on click.
-  $('.cell').click(function (e) {
+  $('.cell').on('click', function (e) {
     var thisCell = e.target;
     Game.switchState(thisCell);
-  });
-
-  // Trash game grid on click.
-  $('.trash').click(function () {
-    Game.trash();
-  });
-
-  // Randomize game grid on click.
-  $('.random').click(function () {
-    Game.randomGrid();
-  });
-
-  $('.size').click(function () {
-    Game.getNewSize(function (newSize) {
-      if (!newSize === false) {
-        Game.newAmount(newSize);
-      }
-    });
-  });
-
-  // Copy sharable 'grid' link to clipboard on click.
-  $('.share').click(function () {
-    Codes.generateURL(function (url) {
-      copyToClipboard(url);
-    });
   });
 
   // Check if the mouse button is down or not.
@@ -260,13 +230,53 @@ Game.registerEvents = function () {
   $(".cell").mouseenter( function(e) {
     if (Game.isMouseDown) $(e.target).click();
   });
+}
+/**
+ * Register all event listeners.
+ * Returns all listener objects.
+ * @return Object
+ */
+Game.registerEvents = function () {
+
+  // Switch between edit and play modes.
+  $('.controls').click(function () {
+    Game.togglePause();
+  });
+
+  Game.cellClick();
+
+  // Trash game grid on click.
+  $('.trash').click(function () {
+    Game.trash();
+  });
+
+  // Randomize game grid on click.
+  $('.random').click(function () {
+    Game.randomGrid();
+  });
+
+  $('.size').click(function () {
+    Game.getNewSize(function (newSize) {
+      if (!newSize === false) {
+        Game.newAmount(newSize, true);
+      }
+    });
+  });
+
+  // Copy sharable 'grid' link to clipboard on click.
+  $('.share').click(function () {
+    Codes.generateURL(function (url) {
+      copyToClipboard(url);
+    });
+  });
 
 }
 
 /**
  * Set the game to a new Amount of cells.
  */
-Game.newAmount = function (amount) {
+Game.newAmount = function (amount, cellClick) {
+
   if (typeof(amount) != "number") {
     throw amount+' is not a valid amount'
   }
@@ -275,7 +285,9 @@ Game.newAmount = function (amount) {
   }else {
     if (Grid.amount != amount) {
       this.stop();
-      this.init({ width: amount, type: 'empty'});
+      Game.init({width: amount, type:'empty'})
+      Game.togglePause();
+      if (!cellClick == false) Game.cellClick();
     }
   }
 }
