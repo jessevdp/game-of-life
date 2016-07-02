@@ -18,6 +18,7 @@ body {
   user-select: none;
 }
 
+/* A div wrapping the grid to make sure its vertically aligned. */
 .outer {
   display: table;
   position: absolute;
@@ -25,13 +26,7 @@ body {
   width: 100%;
   z-index: 1;
 }
-.inner {
-  display: table-cell;
-  vertical-align: middle;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
+/* The 'inner' #grid div, making sure the grid is alligned in the perfect centre. */
 #grid {
   display: table-cell;
   vertical-align: middle;
@@ -40,80 +35,55 @@ body {
   text-align: center;
 }
 
-.options i,
+/* Style of all "option butons". */
+.options,
 .controls,
 .share {
+  /* Making sure bottons are on top of grid. */
   z-index: 2;
   cursor: pointer;
+  color: #fff;
+  opacity: 0.5;
+  text-align: center;
 }
-
+/* Options in the top left corner. */
 .options {
   position: absolute;
   top: 2em;
   left: 2em;
-  color: #fff;
-  opacity: 0.5;
-  text-align: center;
-  z-index: 2;
 }
+/* Padding the icons inside options to make sure they're not touching. */
 .options i{
   padding: 2px;
 }
 
+/* Controls in the top right corner. */
 .controls {
   position: absolute;
   top: 2em;
   right: 2em;
-  color: #fff;
-  opacity: 0.5;
-  z-index: 99;
-  float: left;
 }
 
-.controls i {
-  padding: 4px;
-}
-
+/* Share button in the bottom left corner */
 .share {
   position: absolute;
   bottom: 2em;
   left: 2em;
-  color: #fff;
-  opacity: 0.5;
-  text-align: center;
 }
 
-.copyAlert {
-  display: none;
-  font-size: 4em;
-  color: #FFF;
-  text-align: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index:99;
-  font-family: 'Varela Round', sans-serif;
-}
-.copyAlert span {
-  padding: 0.5em;
-  background-color: rgba(17, 17, 17, 0.8);
-  border-radius: 500px;
-}
-
+/* Main cell styling */
 .cell {
   display: inline-block;
   border-radius: 100%;
   background-color: #5c5c5c;
   opacity: 0.3;
 }
-
+/* Alive cell styling */
 .alive {
   background-color: #e300ff;
   opacity: 0.7;
 }
-
+/* Dead cell styling */
 .dead {
   background-color: #5c5c5c;
   opacity: 0.3;
@@ -123,6 +93,7 @@ body {
     RESPONSIVE CSS
    =================*/
 @media screen and (max-width: 768px) {
+  /* moving the icons a bit closer to the edges of the screen on mobile display */
   .controls {
     top: 1em;
     right: 1em;

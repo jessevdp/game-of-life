@@ -21,7 +21,7 @@ Codes.makeCode = function() {
 }
 
 /**
- * Compresses the a binary string into a hex string.
+ * Compresses the a binary string into a compressed string.
  * Returns the compressed string.
  */
 Codes.compress = function(bin) {
@@ -191,6 +191,8 @@ Codes.decompress = function(compressed) {
 
   var decompressedArr = returnValue.split('');
   returnValue = ''; // Emptying the return variable.
+
+  // Deleting the not needed leading 0s used as padding.
   for (var i = paddingAmount; i < decompressedArr.length; i++) {
     returnValue += decompressedArr[i];
   }
