@@ -19,9 +19,9 @@ Grid.setDiameter = function () {
   // Checking which is smaller, the windows height or width.
   // The smallest one determines the diameter of the cells.
   if ($(window).height() > $(window).width()) {
-    this.diameter = ($(window).width()-($(window).width() / 8)) /  this.amount;
+    this.diameter = ($(window).width()-($(window).width() / 7.5)) /  this.amount;
   }else{
-    this.diameter = ($(window).height()-($(window).width() / 8)) /  this.amount;
+    this.diameter = ($(window).height()-($(window).width() / 7.5)) /  this.amount;
   }
 
 }
