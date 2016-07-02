@@ -32,9 +32,11 @@ Game.switchMode = function () {
     controls.empty();
     // Adding the save icon.
     controls.append($('<i class="fa fa-play fa-2x"></i>'));
+    // Adding all the option's icons.
     $('.trash').append($('<i class="fa fa-trash fa-2x"></i>'));
     $('.random').append($('<i class="fa fa-random fa-2x"></i>'));
     $('.share').append($('<i class="fa fa-share-square-o fa-2x"></i>'));
+    $('.size').append($('<i class="fa fa-expand fa-2x"></i>'));
 
     return 'clear';
   } else {
@@ -45,10 +47,11 @@ Game.switchMode = function () {
     controls.empty();
     // Adding the pencil icon.
     controls.append($('<i class="fa fa-pencil-square fa-2x"></i>'))
-    // Emptying .trash and .random Div
+    // Emptying .trash, .random, .share and .size Div
     $('.trash').empty();
     $('.random').empty();
     $('.share').empty();
+    $('.size').empty();
 
     return 'set';
   }
@@ -121,6 +124,8 @@ Game.init = function (settings, callback) {
   }
   else if (this.settings.type == 'hash') {
     Codes.importFromURL();
+  } else if (this.settings.type == 'empty') {
+    Grid.emptyGrid();
   }
   else {
     throw "Unknown game type for settings.type";
@@ -173,6 +178,32 @@ Game.togglePause = function () {
 }
 
 /**
+ * Request user input for a new gird size.
+ * Makes sure this input is a number between (1< number <= 75).
+ * Returns to callback. (only if the input passes the conditions listed above)
+ */
+Game.getNewSize = function(callback) {
+  var newSize = prompt('Please enter a grid size!', 'Grid size');
+  var number = Number(newSize);
+  if (isNaN(newSize)) {
+    alert('"'+newSize+'"'+' is not a number.\nPlease try again!');
+    var returnValue = false;
+  }else if (!isInt(number)) {
+    alert(newSize+' is not a round number.\nPlease try again!');
+    var returnValue = false;
+  }else if (number > 75) {
+    alert('Sorry '+newSize+' is too big!\nPlease try again!');
+    var returnValue = false;
+  }else if (number <= 1) {
+    alert('Please enter a number greather than 1!\nPlease try again!');
+    var returnValue = false;
+  } else {
+    var returnValue = number;
+  }
+  callback(returnValue);
+}
+
+/**
  * Register all event listeners.
  * Returns all listener objects.
  * @return Object
@@ -198,6 +229,14 @@ Game.registerEvents = function () {
   // Randomize game grid on click.
   $('.random').click(function () {
     Game.randomGrid();
+  });
+
+  $('.size').click(function () {
+    Game.getNewSize(function (newSize) {
+      if (!newSize === false) {
+        Game.newAmount(newSize);
+      }
+    });
   });
 
   // Copy sharable 'grid' link to clipboard on click.
@@ -236,7 +275,7 @@ Game.newAmount = function (amount) {
   }else {
     if (Grid.amount != amount) {
       this.stop();
-      this.init({ width: amount, random: 'no'});
+      this.init({ width: amount, type: 'empty'});
     }
   }
 }
