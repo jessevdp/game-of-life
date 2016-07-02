@@ -151,11 +151,15 @@ Grid.drawGrid = function () {
  * Set a random Grid.
  */
 Grid.randomGrid = function () {
-
   for (var i = 1; i < (this.amount * this.amount) + 1; i++) {
     this.setState(this.cells[i], this.randomState());
   }
+}
 
+Grid.emptyGrid = function () {
+  for (var i = 1; i < (this.amount * this.amount) + 1; i++) {
+    this.setState(this.cells[i], 0);
+  }
 }
 
 /**

@@ -125,8 +125,7 @@ Game.init = function (settings, callback) {
   else if (this.settings.type == 'hash') {
     Codes.importFromURL();
   } else if (this.settings.type == 'empty') {
-    // This statement is to prevent the error if type == empty
-    // No actual code should be envoked since the grid should be empty.
+    Grid.emptyGrid();
   }
   else {
     throw "Unknown game type for settings.type";
