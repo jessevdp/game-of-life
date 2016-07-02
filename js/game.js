@@ -172,12 +172,6 @@ Game.togglePause = function () {
   }
 }
 
-Game.copyAlert = function () {
-  var $copyAlert = $('.copyAlert');
-  $copyAlert.show();
-  $copyAlert.fadeOut(2000);
-}
-
 /**
  * Register all event listeners.
  * Returns all listener objects.
@@ -210,7 +204,6 @@ Game.registerEvents = function () {
   $('.share').click(function () {
     Codes.generateURL(function (url) {
       copyToClipboard(url);
-      //Game.copyAlert();
     });
   });
 
