@@ -187,15 +187,20 @@ Game.getNewSize = function(callback) {
   var number = Number(newSize);
   if (isNaN(newSize)) {
     alert('"'+newSize+'"'+' is not a number.\nPlease try again!');
+    var returnValue = false;
   }else if (!isInt(number)) {
     alert(newSize+' is not a round number.\nPlease try again!');
+    var returnValue = false;
   }else if (number > 75) {
     alert('Sorry '+newSize+' is too big!\nPlease try again!');
+    var returnValue = false;
   }else if (number <= 1) {
     alert('Please enter a number greather than 1!\nPlease try again!');
+    var returnValue = false;
   } else {
-    callback(number);
+    var returnValue = number;
   }
+  callback(returnValue);
 }
 
 /**
@@ -228,7 +233,9 @@ Game.registerEvents = function () {
 
   $('.size').click(function () {
     Game.getNewSize(function (newSize) {
-      Game.newAmount(newSize);
+      if (!newSize === false) {
+        Game.newAmount(newSize);
+      }
     });
   });
 
