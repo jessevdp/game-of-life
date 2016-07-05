@@ -6,7 +6,8 @@ See it in action at https://gol.js.org
 ### Features
 - Paint your own start position or let the game generate a random one.
 - Responsive Grid size.
-- And much more to come..
+- Resizable grid.
+- Share your game with your friends.
 
 ### Game Rules
 - Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure).
