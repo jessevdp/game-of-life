@@ -20,11 +20,19 @@ Game.play = function () {
 
 /**
  * Switch between edit and play modes.
+ * @param String, 'pause' or 'play'
+ * optional, only if a specific task needs to be done.
  */
-Game.switchMode = function () {
+Game.switchMode = function (mode) {
   var controls = $('.controls');
 
-  if (controls.hasClass('edit')) {
+  // Emptying .trash, .random, .share and .size Div.
+  $('.trash').empty();
+  $('.random').empty();
+  $('.share').empty();
+  $('.size').empty();
+
+  if (controls.hasClass('edit') || mode == 'pause') {
     // Removing the edit class and adding the save class.
     controls.removeClass('edit');
     controls.addClass('save');
@@ -39,19 +47,17 @@ Game.switchMode = function () {
     $('.size').append($('<i class="fa fa-expand fa-2x"></i>'));
 
     return 'clear';
-  } else {
+  } else if (controls.hasClass('save') || mode == 'play') {
     // Removing the save class and adding the edit class
     controls.removeClass('save');
     controls.addClass('edit');
     // Emptying the div.
     controls.empty();
     // Adding the pencil icon.
-    controls.append($('<i class="fa fa-pencil-square fa-2x"></i>'))
-    // Emptying .trash, .random, .share and .size Div
-    $('.trash').empty();
-    $('.random').empty();
-    $('.share').empty();
-    $('.size').empty();
+    controls.append($('<i class="fa fa-pencil-square fa-2x"></i>'));
+
+    // Other 'option' icons don't need to be deleted,
+    // since this has been done at the start of the function.
 
     return 'set';
   }
@@ -168,9 +174,11 @@ Game.stop = function () {
 
 /**
  * Pause or un-pause the Game.
+ * @param String, 'pause' or 'play'
+ * Optional, only if a specific task needs to be done.
  */
-Game.togglePause = function () {
-  if (Game.switchMode() === 'clear') {
+Game.togglePause = function (mode) {
+  if (Game.switchMode(mode) === 'clear') {
     clearInterval(Game.interval);
   } else {
     Game.interval = window.setInterval(function () {
@@ -237,6 +245,10 @@ Game.cellClick = function() {
  * @return Object
  */
 Game.registerEvents = function () {
+
+  $(window).blur(function () {
+     Game.togglePause('pause');
+  });
 
   // Switch between edit and play modes.
   $('.controls').click(function () {
