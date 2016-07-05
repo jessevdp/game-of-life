@@ -212,33 +212,7 @@ Game.getNewSize = function(callback) {
   }
   callback(returnValue);
 }
-/**
- * All .cell clicking events.
- * (seperate function from other registerEvents, since these need to be re-envoked)
- */
-Game.cellClick = function() {
 
-  // Switch cell state on click.
-  $('.cell').on('click', function (e) {
-    var thisCell = e.target;
-    Game.switchState(thisCell);
-  });
-
-  // Check if the mouse button is down or not.
-  Game.isMouseDown = false;
-  $(document).mousedown(function () {
-    Game.isMouseDown = true;
-  })
-  .mouseup(function () {
-    Game.isMouseDown = false;
-  })
-
-  // Trigger click event if the mouse enters the
-  // cell while the mouse button is down.
-  $(".cell").mouseenter( function(e) {
-    if (Game.isMouseDown) $(e.target).click();
-  });
-}
 /**
  * Register all event listeners.
  * Returns all listener objects.
@@ -255,7 +229,26 @@ Game.registerEvents = function () {
     Game.togglePause();
   });
 
-  Game.cellClick();
+  // Switch cell state on click.
+  $(document).on('click','.cell', function (e) {
+    var thisCell = e.target;
+    Game.switchState(thisCell);
+  });
+
+  // Check if the mouse button is down or not.
+  Game.isMouseDown = false;
+  $(document).mousedown(function () {
+    Game.isMouseDown = true;
+  })
+  .mouseup(function () {
+    Game.isMouseDown = false;
+  })
+
+  // Trigger click event if the mouse enters the
+  // cell while the mouse button is down.
+  $(document).on('mouseenter', '.cell', function(e) {
+    if (Game.isMouseDown) $(e.target).click();
+  });
 
   // Trash game grid on click.
   $('.trash').click(function () {
@@ -287,7 +280,7 @@ Game.registerEvents = function () {
 /**
  * Set the game to a new Amount of cells.
  */
-Game.newAmount = function (amount, cellClick) {
+Game.newAmount = function (amount) {
 
   if (typeof(amount) != "number") {
     throw amount+' is not a valid amount'
@@ -299,7 +292,6 @@ Game.newAmount = function (amount, cellClick) {
       this.stop();
       Game.init({width: amount, type:'empty'})
       Game.togglePause();
-      if (!cellClick == false) Game.cellClick();
     }
   }
 }

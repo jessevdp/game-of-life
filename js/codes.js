@@ -217,7 +217,7 @@ Codes.readCode =  function(code) {
     throw code.length + ' is not an acceptable length'
   }
   // Setting the grids amount to the needed amount.
-  Game.newAmount(amount, false);
+  Game.newAmount(amount);
 
   var codeArr = code.split('');
 
