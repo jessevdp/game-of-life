@@ -210,7 +210,7 @@ Game.getNewSize = function(callback) {
   } else {
     var returnValue = number;
   }
-  callback(returnValue);
+  if (callback) callback(returnValue);
 }
 
 /**
